@@ -1,7 +1,70 @@
 <!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Test d'affichage de la carte mondiale</title>
+        <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+		<style type="text/css">
+
+		</style>
+    </head>
+    <body>
+        <script type="text/javascript">
+// On charge les données.
+d3.csv("data.csv", function(data){
+
+// On définit la largeur, la hauteur et les marges de la figure.
+var w = 1500;
+var h = 750;
+var padding = 20;
+
+// On crée le SVG aux dimensions correspondantes.
+var svg = d3.select("body")
+	.append("svg")
+	.attr("width", w)
+	.attr("height", h);
+
+// On indique les coordonnées extrémales de la carte.
+// Grille de 720 sur 360.
+var xMin = -179.75;
+var xMax = 179.75;
+var yMin = -89.75;
+var yMax = 89.75;
+
+// On crée les fonctions d'échelle.
+var xScale = d3.scale.linear()
+	.domain([xMin, xMax])
+	.range([padding, w - padding]);
+var yScale = d3.scale.linear()
+	.domain([yMin, yMax])
+	.range([h - padding, padding]);
+var colorScale = d3.scale.linear()
+	.domain([-25,25])
+	.range([0,100])
+	.clamp(true);
+
+// On crée un rectangle pour chaque entrée de <data>.
+var rectangles = svg.selectAll("rect")
+				 .data(data)
+				 .enter()
+				 .append("rect");
+
+// On place les rectangles dans le plan et on règle leur couleur.
+var widthRect = w / 720 * 1.2
+var heightRect = h / 360 * 1.2
+rectangles.attr("x", function(d) {
+		return xScale(d.c1);
+	})
+	.attr("y", function(d) {
+		return yScale(d.c2);
+	})
+	.attr("width", widthRect)
+	.attr("height", heightRect)
+	.attr("fill", function(d) {
+		color = colorScale(d.c3)
+		return "rgb("+(130+color)+","+0+","+(200-color)+")";
+	});
+});
+        </script>
+    </body>
 </html>
