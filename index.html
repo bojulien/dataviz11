@@ -1,0 +1,68 @@
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="multiline.css">
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+</head>
+<header> 
+<center><h1>Projet Data Visualisation 11 </h1></center></header>
+<body>
+
+<div class="chart-wrapper" id="chart-line1"></div>
+  
+  <div id="chart1" class="chart-wrapper">
+  
+  </div>
+  <div id="chart2" class="chart-wrapper">
+    
+  </div>
+ 
+<script type="text/javascript">
+
+
+    d3.csv('data.csv', function(error, data) {
+    data.forEach(function (d) {
+      
+        d.year = +d.year;
+        d.variableA = +d.Glob;
+        d.variableB = +d.NHem;
+        d.variableC = +d.SHem;
+      	d.variableD = +d.winter;
+        d.variableE = +d.spring;
+        d.variableF = +d.summer;
+      	d.variableG = +d.fall;
+      
+       
+    });
+
+    var chart2 = makeLineChart(data, 'year', {
+        'Glob': {column: 'variableA'},
+        'Nhem': {column: 'variableB'},
+        'SHem': {column: 'variableC'},
+        
+    }, {xAxis: 'Years', yAxis: 'temp'});
+      
+      var chart1 = makeLineChart(data, 'year', {
+        'Winter': {column: 'variableD'},
+        'Spring': {column: 'variableE'},
+        'Summer': {column: 'variableF'},
+        'Autumn': {column: 'variableG'},
+        
+    }, {xAxis: 'Years', yAxis: 'temp'});
+      
+    chart1.bind("#chart-line1");
+    chart1.render();
+      
+chart2.bind("#chart-line1");
+    chart2.render();
+
+});
+</script>
+<script src="multiline.js" charset="utf-8"></script>
+</body>
+</html>
+  
