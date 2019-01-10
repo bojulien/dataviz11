@@ -1,70 +1,66 @@
-<!DOCTYPE html>
+
+  <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Test d'affichage de la carte mondiale</title>
-        <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
-		<style type="text/css">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="multiline.css">
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+</head>
+<body>
 
-		</style>
-    </head>
-    <body>
-        <script type="text/javascript">
-// On charge les données.
-d3.csv("data.csv", function(data){
+<div class="chart-wrapper" id="chart-line1"></div>
+  
+  <div id="chart1" class="chart-wrapper">
+  
+  </div>
+  <div id="chart2" class="chart-wrapper">
+    
+  </div>
+ 
+<script type="text/javascript">
 
-// On définit la largeur, la hauteur et les marges de la figure.
-var w = 1500;
-var h = 750;
-var padding = 20;
 
-// On crée le SVG aux dimensions correspondantes.
-var svg = d3.select("body")
-	.append("svg")
-	.attr("width", w)
-	.attr("height", h);
+    d3.csv('data.csv', function(error, data) {
+    data.forEach(function (d) {
+      
+        d.year = +d.year;
+        d.variableA = +d.Glob;
+        d.variableB = +d.NHem;
+        d.variableC = +d.SHem;
+      	d.variableD = +d.winter;
+        d.variableE = +d.spring;
+        d.variableF = +d.summer;
+      	d.variableG = +d.fall;
+      
+       
+    });
 
-// On indique les coordonnées extrémales de la carte.
-// Grille de 720 sur 360.
-var xMin = -179.75;
-var xMax = 179.75;
-var yMin = -89.75;
-var yMax = 89.75;
+    var chart2 = makeLineChart(data, 'year', {
+        'Glob': {column: 'variableA'},
+        'Nhem': {column: 'variableB'},
+        'SHem': {column: 'variableC'},
+        
+    }, {xAxis: 'Years', yAxis: 'temp'});
+      
+      var chart1 = makeLineChart(data, 'year', {
+        'Winter': {column: 'variableD'},
+        'Spring': {column: 'variableE'},
+        'Summer': {column: 'variableF'},
+        'Autumn': {column: 'variableG'},
+        
+    }, {xAxis: 'Years', yAxis: 'temp'});
+      
+    chart1.bind("#chart-line1");
+    chart1.render();
+      
+chart2.bind("#chart-line1");
+    chart2.render();
 
-// On crée les fonctions d'échelle.
-var xScale = d3.scale.linear()
-	.domain([xMin, xMax])
-	.range([padding, w - padding]);
-var yScale = d3.scale.linear()
-	.domain([yMin, yMax])
-	.range([h - padding, padding]);
-var colorScale = d3.scale.linear()
-	.domain([-25,25])
-	.range([0,100])
-	.clamp(true);
-
-// On crée un rectangle pour chaque entrée de <data>.
-var rectangles = svg.selectAll("rect")
-				 .data(data)
-				 .enter()
-				 .append("rect");
-
-// On place les rectangles dans le plan et on règle leur couleur.
-var widthRect = w / 720 * 1.2
-var heightRect = h / 360 * 1.2
-rectangles.attr("x", function(d) {
-		return xScale(d.c1);
-	})
-	.attr("y", function(d) {
-		return yScale(d.c2);
-	})
-	.attr("width", widthRect)
-	.attr("height", heightRect)
-	.attr("fill", function(d) {
-		color = colorScale(d.c3)
-		return "rgb("+(130+color)+","+0+","+(200-color)+")";
-	});
 });
-        </script>
-    </body>
+</script>
+<script src="multiline.js" charset="utf-8"></script>
+</body>
 </html>
+  
