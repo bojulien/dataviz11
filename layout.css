@@ -38,7 +38,7 @@ body{background-color: #54a698}
 	color : white;
 	font-size : 450%;
 	margin-left : 10vw;
-	margin-top : 2vw;
+	margin-top : 1vw;
 }
 /*--------------------------*\
 |       WELCOME - LIEN       |
@@ -254,4 +254,7 @@ h2 {font-family : 'lora';}
 }
 
 
-
+#vis {
+            height: 70%;
+            margin: 0;
+        }
