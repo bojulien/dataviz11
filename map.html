@@ -19,10 +19,7 @@
 
     </head>
     <body>
-	
 	<header class=titre> 140 ans de dérèglement climatique </header>
-	
-	
 		<div class=menu>
 		<ul>
 		 <li><a href="accueil.html">Accueil</a></li>
@@ -462,26 +459,37 @@ d3.text("dataset.csv", function(text) {
 /* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
 /* CONSTRUCTION DE L'ÉTIQUETTE DYNAMIQUE DES VILLES. */
 /* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
-	var label = d3.select("body")
-		.append("div")
-		.attr("class", "tooltip")
-		.style("opacity", 0);
+	var xCityLabel = 100;
+	var yCityLabel = 200;
+	
+	cityDiv = gMap.append("foreignObject");
+	cityDiv
+		.attr("display", "block")
+		.attr("x", xCityLabel)
+		.attr("y", yCityLabel)
+		.attr("width", 200)
+		.attr("height", 200)
+		.append("xhtml:body")
+		.html("<div class=tooltip id=cityLabel></div>");
+		
+	var cityLabel = d3.select("#cityLabel");
 
-	var cityPop = label.append("p");
-	var cityName = label.append("p");
-	var cityCountry = label.append("p");
-
-	// On construit l'animation.
+	var cityPop = cityLabel.append("p");
+	var cityName = cityLabel.append("p");
+	var cityCountry = cityLabel.append("p");
+	
 	towns
 		.on("mouseover", function(d, i) {
 				d3.select(this)
 					.style("fill-opacity", "1");
-				label.transition()
+				cityDiv.transition()
 					.duration(200)
-					.style("opacity", 1);
-				label
-					.style("left", ((+d.lon+181)/2*mapScale-10)+"px")
-					.style("top", ((90-(+d.lat+91)/2)*mapScale+10)+"px");
+					.style("opacity", 1)
+					.attr("display", "block");
+				cityDiv
+					.attr("x", ((+d.lon+181)/2*mapScale+10))
+					.attr("y", ((90-(+d.lat+91)/2)*mapScale-15));
+				
 				cityPop
 					.text("Pop : " + abbreviateNumber(d.pop));
 				cityName
@@ -492,9 +500,10 @@ d3.text("dataset.csv", function(text) {
 		.on("mouseout", function(d, i) {
 				d3.select(this)
 					.style("fill-opacity", "0.4");
-				label.transition()
+				cityDiv.transition()
 					.duration(500)
-					.style("opacity", 0);
+					.style("opacity", 0)
+					.attr("display", "none");
 			});
 	});
 });
