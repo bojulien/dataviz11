@@ -2,7 +2,7 @@
 |       BODY       |
 \*----------------*/
 
-body, html {margin : 0; padding : 0; width : 100% ; height : 100%;}
+body, html {margin : 0; padding : 0; width : 100% ; height : 90%;}
 body{background-color: #54a698}
 
 @font-face {font-family : 'lobster'; src : url('police_lobster.otf');}
@@ -145,7 +145,11 @@ h2 {font-family : 'lora';}
 	font-weight:bold;
 	color:#ffffff;
 }
-
+.chart-wrapper {
+    max-width: 70%;
+    min-width: 50%;
+    margin: 0 auto;
+}
 
 .chart-wrapper .inner-wrapper {
     position: relative;
@@ -160,8 +164,8 @@ h2 {font-family : 'lora';}
 }
 
 .chart-wrapper .inner-box {
-    width: 90%;
-    height: 60%;
+    width: 100%;
+    height: 100%;
 }
 
 .chart-wrapper text {
@@ -202,7 +206,7 @@ h2 {font-family : 'lora';}
     padding: 0px 200px;
 }
 .chart-wrapper .legend > div {
-    margin: 20px 20px 20px 20px;
+    margin: 0px 0px 0px 0px;
 	margin-top : 0;
     flex-grow: 20;
 }
