@@ -145,12 +145,12 @@ h2 {font-family : 'lora';}
 	font-weight:bold;
 	color:#ffffff;
 }
-
 .chart-wrapper {
     max-width: 70%;
     min-width: 50%;
     margin: 0 auto;
 }
+
 .chart-wrapper .inner-wrapper {
     position: relative;
     padding-bottom: 40%;
