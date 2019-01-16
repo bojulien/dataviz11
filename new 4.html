@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.4/d3-queue.min.js"></script>
 	<link rel="stylesheet" href="layout.css" />
         <title>Projet data viz</title>
+
 </head>
 <body>
 
@@ -18,13 +19,13 @@
 		 <li><a href="accueil.html">Accueil</a></li>
 		  <li><a href="new 4.html">Bar plot</a></li>
 		  <li><a href="2.html">Line Chart</a></li>
-		  <li><a href="2.html">Map</a></li>
+		  <li><a href="map.html">Map</a></li>
 		  
 		</ul>
 	</div>
 
-    <form>
-        <label for="year" class=menu>Choisissez une année: </label>
+       <form>
+        <label for="year">Choisissez une année: </label>
         <input type="range" min=1880 max=2010 step=10 id="year" value=1880 oninput="selected_year.value = year.value">
         <output name="selected_year" id="selected_year">1890</output>
     </form>
@@ -63,8 +64,8 @@ var y_scale = d3.scaleLinear()
     .range([height, 0]);
 
 var colour_scale = d3.scaleQuantile()
-    .range(["#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"]);
-
+    .range([ "#190694","#3399FF","#0ad4ff"]);
+var colour_scale2 = d3.scaleQuantile().range(["#df7810","#df3a10","#c70101"])
 var y_axis = d3.axisLeft(y_scale);
 var x_axis = d3.axisBottom(x_scale);
 
@@ -94,9 +95,9 @@ function draw(year) {
         return +d.value;
     });
 
-    y_scale.domain([min_value-0.1, max_value]);
+    y_scale.domain([-1, 1]);
     colour_scale.domain([min_value-0.1, max_value]);
-
+    colour_scale2.domain([min_value-0.1, max_value])
     var bars = svg.selectAll('.bar')
         .data(csv_data)
 
@@ -114,17 +115,15 @@ function draw(year) {
         .attr('width', x_scale.bandwidth())
         .attr('y', height)
         .attr('height', 0)
+    
 
     new_bars.merge(bars)
         .transition(t)
-        .attr('y', function(d) {
-            return y_scale(+d.value);
-        })
-        .attr('height', function(d) {
-            return height - y_scale(+d.value)
-        })
-        .attr('fill', function(d) {
-            return colour_scale(+d.value);
+        .attr('y', function(d) { if (y_scale(d.value)<y_scale(0)) {return y_scale(d.value)} else {return y_scale(0)}})
+        .attr('height', function(d) {  return Math.abs(Math.abs(y_scale(d.value)-y_scale(0))) })
+        .attr('fill', function(d) { if (d.value<0) 
+    {return colour_scale(+d.value)}
+                                   else {return colour_scale2(+d.value)};
         })
 
     svg.select('.x.axis')
@@ -173,11 +172,8 @@ var slider = d3.select('#year');
 slider.on('change', function() {
     draw(this.value);
 });
-
 	</script>
-	
-
-	
-
 </body>
 </html>
+
+	
