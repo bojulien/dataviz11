@@ -460,6 +460,65 @@ d3.text("dataset.csv", function(text) {
 /* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
 /* CONSTRUCTION DE L'ÉTIQUETTE DYNAMIQUE DES VILLES. */
 /* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
+
+    var tooltip = svg.append("g") // Group for the whole tooltip
+        .attr("id", "tooltip")
+        .style("display", "none");
+    
+    tooltip.append("polyline") // The rectangle containing the text, it is 210px width and 100 height
+        .attr("points","0,0 160,0 160,65 0,65 0,0")
+        .style("fill", "#54A698")
+        .style("stroke","black")
+        .style("opacity","1")
+        .style("stroke-width","1")
+        .style("padding", "1em");
+    
+    tooltip.append("line") // A line inserted between country name and score
+        .attr("x1", 20)
+        .attr("y1", 20)
+        .attr("x2", 140)
+        .attr("y2", 20)
+        .style("stroke","#252525")
+        .style("stroke-width","0.5")
+        .attr("transform", "translate(0, 5)");
+    
+    var text = tooltip.append("text") // Text that will contain all tspan (used for multilines)
+        .style("font-size", "13px")
+        .style("fill", "#FFFFFF")
+        .attr("transform", "translate(0, 20)");
+    
+    text.append("tspan") // Name udpated by its id
+        .attr("x", 80) // ie, tooltip width / 2
+        .attr("y", 0)
+        .attr("id", "tooltip-name")
+        .attr("text-anchor", "middle")
+        .style("font-weight", "600")
+        .style("font-size", "17px");
+    
+    text.append("tspan") // Fixed text
+        .attr("x", 80) // ie, tooltip width / 2
+        .attr("y", 20)
+        .attr("text-anchor", "middle")
+        .style("fill", "#FFFFFF")
+        .text("Population : ");
+    
+    text.append("tspan") // Population udpated by its id
+        .attr("id", "tooltip-score")
+        .style("fill","#FFFFFF")
+        .style("font-weight", "bold");
+    
+    text.append("tspan") // Fixed text
+        .attr("x", 80) // ie, tooltip width / 2
+        .attr("y", 35)
+        .attr("text-anchor", "middle")
+        .style("fill", "#FFFFFF")
+        .text("Country : ");
+    
+    text.append("tspan") // Country udpated by its id
+        .attr("id", "tooltip-country")
+        .style("fill","#FFFFFF")
+        .style("font-weight", "bold");
+		
 	var xCityLabel = 100;
 	var yCityLabel = 200;
 	
@@ -471,42 +530,33 @@ d3.text("dataset.csv", function(text) {
 		.attr("width", 200)
 		.attr("height", 100)
 		.append("xhtml:body")
-		.html("<div class=tooltip id=cityLabel></div>");
-		
-	var cityLabel = d3.select("#cityLabel");
-
-	var cityPop = cityLabel.append("p");
-	var cityName = cityLabel.append("p");
-	var cityCountry = cityLabel.append("p");
+		.html("<div class=tooltip id=cityLabel></div>")
+		.attr("fill", "black");
 	
 	towns
-		.on("mouseover", function(d, i) {
-				d3.select(this)
-					.style("fill-opacity", "1");
-				cityDiv.transition()
-					.duration(200)
-					.style("opacity", 1)
-					.attr("display", "block");
-				cityDiv
-					.attr("x", ((+d.lon+181)/2*mapScale+10))
-					.attr("y", ((90-(+d.lat+91)/2)*mapScale-15));
-				
-				cityPop
-					.text("Pop : " + abbreviateNumber(d.pop));
-				cityName
-					.text("Ville : " + d.name);
-				cityCountry
-					.text("Pays : " + d.country);
-			})
-		.on("mouseout", function(d, i) {
-				d3.select(this)
-					.style("fill-opacity", "0.4");
-				cityDiv.transition()
-					.duration(500)
-					.style("opacity", 0)
-					.attr("display", "none");
-			});
-	});
+        .on("mouseover", function(d) {
+			d3.select(this).transition()
+				.duration(200)
+				.style("fill-opacity", "1");
+            tooltip.style("display", null);
+            tooltip.select('#tooltip-name')
+                .text(d.name);
+            tooltip.select('#tooltip-country')
+                .text(d.country);
+            tooltip.select('#tooltip-score')
+                .text(abbreviateNumber(d.pop));
+        })
+        .on("mouseout", function(d) {
+			d3.select(this).transition()
+				.duration(500)
+				.style("fill-opacity", "0.4");
+            tooltip.style("display", "none");
+        })
+        .on("mousemove", function(d) {
+            var mouse = d3.mouse(this);
+            tooltip.attr("transform", "translate(" + (mouse[0]+1) + "," + (mouse[1]-1) + ")");
+        });
+    });
 });
         </script>
     </body>
