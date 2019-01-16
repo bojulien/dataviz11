@@ -1,0 +1,67 @@
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="layout.css" />
+    <script src="http://d3js.org/d3.v3.js" charset="utf-8"></script>
+    <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+</head>
+
+<body>
+<header class=titre> 140 ans de dérèglement climatique </header>
+	
+		<div class=menu>
+		<ul>
+		 <li><a href="accueil.html">Accueil</a></li>
+		  <li><a href="new 4.html">Bar plot</a></li>
+		  <li><a href="2.html">Line Chart</a></li>
+		  <li><a href="2.html">Map</a></li>
+		  
+		</ul>
+	</div>
+
+<div class="chart-wrapper" id="chart-line1"></div>
+  
+  <div id="chart1" class="chart-wrapper">
+  
+  </div>
+ 
+<script type="text/javascript">
+
+
+    d3.csv('data.csv', function(error, data) {
+    data.forEach(function (d) {
+      
+        d.year = +d.year;
+        d.variableA = +d.Glob;
+        d.variableB = +d.NHem;
+        d.variableC = +d.SHem;
+      	d.variableD = +d.winter;
+        d.variableE = +d.spring;
+        d.variableF = +d.summer;
+      	d.variableG = +d.fall;
+      
+       
+    });
+
+    var chart1 = makeLineChart(data, 'year', {
+        'Glob': {column: 'variableA'},
+        'Nhem': {column: 'variableB'},
+        'SHem': {column: 'variableC'},
+        
+    }, {xAxis: 'Years', yAxis: 'A.temp'});
+      
+
+      
+    chart1.bind("#chart-line1");
+    chart1.render();
+      
+
+});
+</script>
+<script src="multiline.js" charset="utf-8"></script>
+</body>
+</html>
+  

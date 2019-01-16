@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+     <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.4/d3-queue.min.js"></script>
+	<link rel="stylesheet" href="layout.css" />
+        <title>Projet data viz</title>
+    <style>
+        html, body, #vis {
+            height: 90%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+	<header class=titre> 140 ans de dérèglement climatique </header>
+	
+	
+		<div class=menu>
+		<ul>
+		 <li><a href="accueil.html">Accueil</a></li>
+		  <li><a href="new 4.html">Bar plot</a></li>
+		  <li><a href="2.html">Line Chart</a></li>
+		  <li><a href="2.html">Map</a></li>
+		  
+		</ul>
+	</div>
+
+    <form>
+        <label for="year" class=menu>Choisissez une année: </label>
+        <input type="range" min=1880 max=2010 step=10 id="year" value=1880 oninput="selected_year.value = year.value">
+        <output name="selected_year" id="selected_year">1890</output>
+    </form>
+    <div id="vis">
+    </div>
+    <script type="text/javascript">
+	var width = document.getElementById('vis')
+    .clientWidth;
+var height = document.getElementById('vis')
+    .clientHeight;
+
+var margin = {
+    top: 10,
+    bottom: 70,
+    left: 70,
+    right: 20
+}
+
+var svg = d3.select('#vis')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
+
+width = width - margin.left - margin.right;
+height = height - margin.top - margin.bottom;
+
+var data = {};
+
+var x_scale = d3.scaleBand()
+    .rangeRound([0, width])
+    .padding(0.1);
+
+var y_scale = d3.scaleLinear()
+    .range([height, 0]);
+
+var colour_scale = d3.scaleQuantile()
+    .range(["#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"]);
+
+var y_axis = d3.axisLeft(y_scale);
+var x_axis = d3.axisBottom(x_scale);
+
+svg.append('g')
+    .attr('class', 'x axis')
+    .attr('transform', 'translate(0,' + height + ')');
+
+svg.append('g')
+    .attr('class', 'y axis');
+
+function draw(year) {
+
+    var csv_data = data[year];
+
+    var t = d3.transition()
+        .duration(2000);
+
+    var months = csv_data.map(function(d) {
+        return d.month;
+    });
+    x_scale.domain(months);
+
+    var max_value = d3.max(csv_data, function(d) {
+        return +d.value;
+    });
+   var min_value = d3.min(csv_data, function(d) {
+        return +d.value;
+    });
+
+    y_scale.domain([min_value-0.1, max_value]);
+    colour_scale.domain([min_value-0.1, max_value]);
+
+    var bars = svg.selectAll('.bar')
+        .data(csv_data)
+
+    bars
+        .exit()
+        .remove();
+
+    var new_bars = bars
+        .enter()
+        .append('rect')
+        .attr('class', 'bar')
+        .attr('x', function(d) {
+            return x_scale(d.month);
+        })
+        .attr('width', x_scale.bandwidth())
+        .attr('y', height)
+        .attr('height', 0)
+
+    new_bars.merge(bars)
+        .transition(t)
+        .attr('y', function(d) {
+            return y_scale(+d.value);
+        })
+        .attr('height', function(d) {
+            return height - y_scale(+d.value)
+        })
+        .attr('fill', function(d) {
+            return colour_scale(+d.value);
+        })
+
+    svg.select('.x.axis')
+        .call(x_axis);
+
+    svg.select('.y.axis')
+        .transition(t)
+        .call(y_axis);
+
+}
+
+d3.queue()
+    .defer(d3.csv, 'Data_1880.csv')
+    .defer(d3.csv, 'Data_1890.csv')
+	.defer(d3.csv, 'Data_1900.csv')
+    .defer(d3.csv, 'Data_1910.csv')
+	.defer(d3.csv, 'Data_1920.csv')
+    .defer(d3.csv, 'Data_1930.csv')
+	.defer(d3.csv, 'Data_1940.csv')
+    .defer(d3.csv, 'Data_1950.csv')
+	.defer(d3.csv, 'Data_1960.csv')
+    .defer(d3.csv, 'Data_1970.csv')
+	.defer(d3.csv, 'Data_1980.csv')
+    .defer(d3.csv, 'Data_1990.csv')
+	.defer(d3.csv, 'Data_2000.csv')
+    .defer(d3.csv, 'Data_2010.csv')
+    .await(function(error, d1880, d1890,d1900,d1910,d1920,d1930,d1940,d1950,d1960,d1970,d1980,d1990,d2000,d2010) {
+        data['1880'] = d1880;
+        data['1890'] = d1890;
+		data['1900'] = d1900;
+        data['1910'] = d1910;
+		data['1920'] = d1920;
+        data['1930'] = d1930;
+		data['1940'] = d1940;
+        data['1950'] = d1950;
+		data['1960'] = d1960;
+        data['1970'] = d1970;
+		data['1980'] = d1980;
+        data['1990'] = d1990;
+		data['2000'] = d2000;
+        data['2010'] = d2010;
+        draw('1880');
+    });
+
+var slider = d3.select('#year');
+slider.on('change', function() {
+    draw(this.value);
+});
+
+	</script>
+	
+
+	
+
+</body>
+</html>
