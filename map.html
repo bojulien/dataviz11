@@ -16,7 +16,6 @@
 		<script src="https://d3js.org/queue.v1.min.js"></script>
 		<script src="https://d3js.org/colorbrewer.v1.min.js"></script>
 		<link rel="stylesheet" href="layout.css" />
-
     </head>
     <body>
 	<header class=titre> 140 ans de dérèglement climatique </header>
@@ -102,14 +101,24 @@ const gInterface = svg.append("g")
 const stripes = svg.append("defs")
 	.append("pattern")
 	.attr("id", "stripes")
-	.attr("width", 4)
-	.attr("height", 20)
+	.attr("width", 8)
+	.attr("height", 8)
 	.attr("patternUnits", "userSpaceOnUse")
 	.attr("patternTransform", "rotate(45 50 50)")
 stripes.append("line")
 	.attr("stroke", "rgb(200,200,200)")
 	.attr("stroke-width", 4)
-	.attr("y2", 20)
+	.attr("x1", 2)
+	.attr("y1", 0)
+	.attr("x2", 2)
+	.attr("y2", 10)
+stripes.append("line")
+	.attr("stroke", "rgb(255,255,255)")
+	.attr("stroke-width", 4)
+	.attr("x1", 6)
+	.attr("y1", 0)
+	.attr("x2", 6)
+	.attr("y2", 10)
 
 /* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
 /* CONSTRUCTION DE L'INTERFACE. */
@@ -148,7 +157,8 @@ var sliderStep = d3
 var gStep = gInterface.append('g')
 	.attr('transform', 'translate(20,40)')
 
-gStep.call(sliderStep)
+gStep.style("font-size", "18px")
+	.call(sliderStep)
 
 
 // On crée le bouton Play.
@@ -225,14 +235,16 @@ gLegend.selectAll("rect")
 var xAxis = d3.axisRight(legendScale)
     .tickSize(15)
     .tickValues(range(colorScaleMin, colorScaleMax, (colorScaleMax-(colorScaleMin))/colorScaleDivision))
-gLegend.call(xAxis)
+gLegend
+	.style("font-size", "14px")
+	.call(xAxis)
 // Annule l'affichage de l'axe (pour ne garder que les graduations).
 gLegend.call(gLegend => gLegend.select(".domain").remove())
 
 // Affiche le titre de la légende.
 gLegend.append("text")
 	.attr("x", colorScaleSize/8)
-	.attr("y", -45)
+	.attr("y", -50)
 	.attr("font-family", "sans-serif")
 	.attr("font-size", "16px")
 	.attr("font-weight", "bold")
@@ -242,7 +254,7 @@ gLegend.append("text")
 
 // Affiche le rectangle pour les valeurs non définies.
 gLegend.append("rect")
-	.attr("x", 40)
+	.attr("x", 45)
 	.attr("y", colorScaleSize*0.67)
 	.attr("width", 20)
 	.attr("height", 20)
@@ -250,7 +262,7 @@ gLegend.append("rect")
 // Affiche le titre pour les valeurs non définies.
 gLegend.append("text")
 	.attr("x", colorScaleSize*0.67+25)
-	.attr("y", -48)
+	.attr("y", -53)
 	.attr("font-family", "sans-serif")
 	.attr("font-size", "16px")
 	.attr("font-style", "italic")
@@ -406,7 +418,7 @@ d3.text("dataset.csv", function(text) {
 			.exponent(0.01)
 			.domain([popMin, popMax])
 			.range([4, 15])
-		
+
 		mapTown = gMap.append("g")
 		var towns = mapTown.selectAll("circle")
 			.data(cities)
@@ -543,7 +555,7 @@ d3.text("dataset.csv", function(text) {
 			.exponent(2)
 			.domain([altMin, altMax])
 			.range([1.5, 10])
-		
+
 		mapMountain = gMap.append("g");
 		var mountainsCircles = mapMountain.selectAll("circle")
 			.data(mountains.features)
