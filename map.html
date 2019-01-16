@@ -157,8 +157,18 @@ var sliderStep = d3
 var gStep = gInterface.append('g')
 	.attr('transform', 'translate(20,40)')
 
-gStep.style("font-size", "18px")
+gStep
 	.call(sliderStep)
+
+gStep.selectAll(".tick line")
+	.attr("stroke", "#505050")
+gStep.selectAll("text")
+	.attr("font-size", "16px")
+	.attr("font-weight", "bold")
+	.attr("fill", "#000")
+gStep.selectAll(".tick text")
+	.attr("font-size", "14px")
+	.attr("fill", "#505050")
 
 
 // On crée le bouton Play.
