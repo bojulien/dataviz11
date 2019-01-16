@@ -531,6 +531,153 @@ d3.text("dataset.csv", function(text) {
 				cityLabel.attr("transform", "translate(" + (mouse[0]+1) + "," + (mouse[1]-1) + ")")
 			})
 	})
+
+/* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
+/* AFFICHAGE DES MONTAGNES. */
+/* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
+	d3.json("mountains.geojson", function(mountains) {
+		altMin = 0
+		altMax = 8848
+
+		// On construit l'échelle des montagnes.
+		var mountainScale = d3.scalePow()
+			.exponent(2)
+			.domain([altMin, altMax])
+			.range([1.5, 10])
+
+		var mountainsCircles = gMap.selectAll("circle")
+			.data(mountains.features)
+			.enter()
+			.append("circle")
+
+		mountainsCircles
+			.attr("cx", function(d) {
+				return ((+d.properties.longitude+181)/2*mapScale)
+			})
+			.attr("cy", function(d) {
+				return ((100-(+d.properties.latitude+91)/2)*mapScale)
+			})
+			.attr("r", function(d) {
+				if(isNaN(d.properties.meters))
+				{
+					console.log("altitude manquante")
+					console.log(d.properties.longitude)
+					console.log(d.properties.latitude)
+					console.log(d.properties.meters)
+					console.log(d.properties.name)
+				}
+				return mountainScale(d.properties.meters)
+			})
+			.attr("fill","green")
+			.attr("stroke", "none")
+			.attr("fill-opacity", "0.3")
+			.style("display", "none")
+
+		// On lie la CheckBox.
+		boxMountains.on("click", function(d, i){
+			mountainsCheck = d3.select("#boxMountains").node().checked
+			if (mountainsCheck == true)
+			{
+				mountainsCircles
+					.style("display", null)
+			}
+			else
+			{
+				mountainsCircles
+					.style("display", "none")
+			}
+		})
+
+/* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
+/* CONSTRUCTION DE L'ÉTIQUETTE DYNAMIQUE DES MONTAGNES. */
+/* =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= =-=-=-=-= */
+
+		var mountainLabel = svg.append("g") // Groupe pour l'étiquette sur des montagnes.
+			.attr("id", "mountainLabel")
+			.style("display", "none")
+
+		mountainLabel.append("polyline") // The rectangle containing the text, it is 160 width and 65 height.
+			.attr("points","0,0 160,0 160,65 0,65 0,0")
+			.style("fill", "#54A698")
+			.style("stroke","black")
+			.style("opacity","1")
+			.style("stroke-width","1")
+			.style("padding", "1em")
+
+		mountainLabel.append("line") // A separation line.
+			.attr("x1", 20)
+			.attr("y1", 20)
+			.attr("x2", 140)
+			.attr("y2", 20)
+			.style("stroke","#252525")
+			.style("stroke-width","0.5")
+			.attr("transform", "translate(0, 5)")
+
+		var mountainText = mountainLabel.append("text") // Text that will contain all tspan (used for multilines)
+			.style("font-size", "13px")
+			.style("fill", "#FFFFFF")
+			.attr("transform", "translate(0, 20)")
+
+		mountainText.append("tspan") // mountainName udpated by its id
+			.attr("x", 80) // ie, mountainLabel width / 2
+			.attr("y", 0)
+			.attr("id", "mountainName")
+			.attr("text-anchor", "middle")
+			.style("font-weight", "600")
+			.style("font-size", "17px")
+
+		mountainText.append("tspan") // Fixed text
+			.attr("x", 80) // ie, mountainLabel width / 2
+			.attr("y", 20)
+			.attr("text-anchor", "middle")
+			.style("fill", "#FFFFFF")
+			.text("Altitude (en m) : ")
+
+		mountainText.append("tspan") // mountainPopulation udpated by its id
+			.attr("id", "mountainAltitude")
+			.style("fill","#FFFFFF")
+			.style("font-weight", "bold")
+
+		mountainText.append("tspan") // Fixed text
+			.attr("x", 80) // ie, mountainLabel width / 2
+			.attr("y", 35)
+			.attr("text-anchor", "middle")
+			.style("fill", "#FFFFFF")
+			.text("Pays : ")
+
+		mountainText.append("tspan") // Country udpated by its id
+			.attr("id", "mountainCountry")
+			.style("fill","#FFFFFF")
+			.style("font-weight", "bold")
+
+		mountainsCircles
+			.on("mouseover", function(d) {
+				d3.select(this)
+					.style("fill", "black")
+					.style("fill-opacity", "1")
+				mountainLabel.transition()
+					.duration(200)
+					.style("display", null)
+				mountainLabel.select('#mountainName')
+					.text(d.properties.name)
+				mountainLabel.select('#mountainCountry')
+					.text(d.properties.countries[0])
+				mountainLabel.select('#mountainAltitude')
+					.text(abbreviateNumber(d.properties.meters))
+			})
+			.on("mouseout", function(d) {
+				d3.select(this)
+					.style("fill", "green")
+					.style("fill-opacity", "0.3")
+				mountainLabel.transition()
+					.duration(500)
+					.style("display", "none")
+			})
+			.on("mousemove", function(d) {
+				var mouse = d3.mouse(this)
+				mountainLabel.attr("transform", "translate(" + (mouse[0]+15) + "," + (mouse[1]-35) + ")")
+			})
+	})
 })
         </script>
     </body>
