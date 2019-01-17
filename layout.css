@@ -59,7 +59,7 @@ body{background-color: #54a698}
 .titre {
 	font-family : 'lobster';
 	color : white;
-	font-size : 450%;
+	font-size : 700%;
 	margin-left : 10vw;
 	margin-top : 3vw;
 }
@@ -105,6 +105,10 @@ left: 100px;
 \*--------------*/
 
 h2 {font-family : 'lora';}
+h3 {
+	text-align: left;
+	font-family : 'lora';
+}
 
 .contenu, .contenuContact {
 	font-family: verdana;
@@ -259,19 +263,10 @@ h2 {font-family : 'lora';}
             margin: 0;
         }
 
-		div.tooltip {
- 	position: absolute;
-	text-align: left;
-	padding: 2px 5px;
-	margin : 0px;
-	font: 16px sans-serif;
-	background: white;
-	border: 0px;
-	border-radius: 8px;
-	pointer-events: none;
-}
+/* CSS of map.html */
 
 p {
+	text-align: justify;
 	margin: 0px;
 	padding: 0px;
 }
