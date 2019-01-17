@@ -171,8 +171,22 @@ d3.queue()
 var slider = d3.select('#year');
 slider.on('change', function() {
     draw(this.value);
-});
+})
+
+	function toggle_text() {
+  var span = document.getElementById("span_txt");
+  if(span.innerHTML != "") {
+    span.innerHTML = "";
+  } else {
+    span.innerHTML = "Ceci est l'amélioriation de la visualisation de base. Comme nous l'avions annoncé, nous l'avons rendu dynamique, interactive, plus explicite et précise. Nous observons le dérèglement des températures depuis 1890. Il s'agit de la différence entre la température moyenne à chaque mois pour une année donnée, et la température moyenne pour le même mois sur ces 120 dernières années. Nous pouvons nous apercevoir que la température globale a augmenté au fil des années. Si dans un premier temps on observait des variations, à partir des années 1980, nous pouvons voir que l'augmentation devient de plus en plus brutale. Ceci est bien représentatif du réchauffement climatique. ";
+  }
+}
+;
 	</script>
+	
+	<button type="button" onclick="toggle_text();">Description</button>
+	<span id="span_txt"></span>
+
 </body>
 </html>
 
