@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Carte</title>
+        <title>Carte mondiale</title>
         <script src="https://d3js.org/d3.v4.min.js"></script>
 		<script src="https://unpkg.com/d3-simple-slider"></script>
 		<script src="https://unpkg.com/topojson-client@3"></script>
@@ -128,7 +128,7 @@ stripes.append("line")
 gInterface.append("text")
 	.attr("x", interfaceSize/5)
 	.attr("y", 13)
-	.attr("font-family", "sans-serif")
+	.attr("font-family", "lora")
 	.attr("font-size", "24px")
 	.attr("font-weight", "bold")
 	.attr("fill", "#000000")
@@ -253,10 +253,10 @@ gLegend.call(gLegend => gLegend.select(".domain").remove())
 
 // Affiche le titre de la légende.
 gLegend.append("text")
-	.attr("x", colorScaleSize/8)
-	.attr("y", -50)
-	.attr("font-family", "sans-serif")
-	.attr("font-size", "16px")
+	.attr("x", colorScaleSize/10)
+	.attr("y", -53)
+	.attr("font-family", "lora")
+	.attr("font-size", "18px")
 	.attr("font-weight", "bold")
 	.attr("fill", "#000000")
 	.text("Échelle de température (°C)")
@@ -264,7 +264,7 @@ gLegend.append("text")
 
 // Affiche le rectangle pour les valeurs non définies.
 gLegend.append("rect")
-	.attr("x", 45)
+	.attr("x", 48)
 	.attr("y", colorScaleSize*0.67)
 	.attr("width", 20)
 	.attr("height", 20)
@@ -272,7 +272,7 @@ gLegend.append("rect")
 // Affiche le titre pour les valeurs non définies.
 gLegend.append("text")
 	.attr("x", colorScaleSize*0.67+25)
-	.attr("y", -53)
+	.attr("y", -56)
 	.attr("font-family", "sans-serif")
 	.attr("font-size", "16px")
 	.attr("font-style", "italic")
@@ -718,5 +718,30 @@ d3.text("dataset.csv", function(text) {
 	})
 })
         </script>
+		<div class=contenu>
+			<section>  
+				<article>	 
+					<br>
+					<table width="90%" border ="10" cellspacing="2" cellpadding="10"  bordercolor="#000000" ><tr><td>
+						<center><h2>Analyse de la visualisation</h2></center>
+						<h3>Données : </h3>
+						<p>On a représenté les anomalies de température partout sur le globe, des années 1880 à 2018. La répartition spatiale est une grille régulière de 2°x2° en longitude/latitude, soit une précision de 1200km. Le résultat semble similaire à celui obtenue par la <a href="https://www.youtube.com/watch?time_continue=4&v=Z4bSxb5THm4">NASA</a>.
+						</p>
+						<p>Le contour des terres émergées et des pays est fourni par un <a href="https://github.com/topojson/world-atlas">projet GitHub</a> du développeur <a href="https://bost.ocks.org/mike/">Mike Bostock</a>.</p>
+						<p>Il est possible de superposer les 50 villes les plus peuplées, pour 2018. Les données ont été trouvées sur le site <a href="https://simplemaps.com/data/world-cities">SimpleMaps.com</a>.</p>
+						<p>Il est possible d'ajouter de nombreux sommets, environ 3000. Les données ont été extraites du <a href="https://github.com/open-peaks/data">projet GitHub Open Peaks</a>.</p>
+						<h3>Traitement des données : </h3>
+						<p>Les anomalies ont été moyennées sur cinq ans, ceci permet de lisser les variations de couleur et de minimiser l'impact des singularités ponctuelles de température, par exemple un été très chaud ou au contraire un hiver très froid dans une certaine région.</p>
+						<p>Quelques zones admettent des données manquantes avant les années 1960, comme l'Antarctique, l'Amazonie, l'Himalaya ou encore une grande partie de l'Afrique. Il est à noter, fait plutôt étrange, que les données au Groenland ainsi que pour la plupart des océans sont en revanche disponibles, ce qui peut être surprenant compte tenu des moyens de l'époque.</p>
+						<h3>Analyse de la visualisation : </h3>
+						<p>Au niveau du temps, la situation reste assez stable jusqu'aux années 1970 avant d'exploser significativement.</p>
+						<p><b>Analyse spatiale pour 2018 :</b> les zones les plus touchées par le réchauffement climatique (plus de 2°C d'augmentation) semblent être les plus au Nord, avec l'Alaska, la Sibérie et le Groeland. On pourrait se demander si ceci n'est pas un effet des températures extrêmes (en °C) de ces endroits, mais ceci est infirmé par l'augmentation moindre au niveau du Pôle Sud.</p>
+						<p>La carte de température ne montre pas un impact significatif de la part des métropoles. D'une part, la précision n'est pas assez fine pour étayer les changements très locaux, comme les variations aux centre-villes liées aux gazs d'échappement, au terrain non naturel (bitume) ou à la situation géographique (cuvette pour Grenobles). D'autre part, l'influence locale des métropoles pourrait être plus marqué sur d'autres facteurs de pollution, comme la qualité de l'air ou la qualité de l'eau. Enfin, les métropoles ont évidemment un impact non négligeable sur le réchauffement climatique mais le rôle des vents, du cycle hydrologique et des courants marins tend à lisser les variations de température au niveau mondial.</p>
+						<p></p>
+					</div>
+					<br/>
+				</article> 
+			</section>
+		</div>
     </body>
 </html>
