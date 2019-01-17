@@ -20,10 +20,6 @@ Où vous pourrez retrouver :
 
 https://data.giss.nasa.gov/gistemp/
 
-https://crudata.uea.ac.uk/cru/data/hrg/cru_ts_4.02/cruts.1811131722.v4.02/tmp/
-
-
-
 
 https://bojulien.github.io/dataviz11/
 
