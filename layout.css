@@ -59,7 +59,7 @@ body{background-color: #54a698}
 .titre {
 	font-family : 'lobster';
 	color : white;
-	font-size : 700%;
+	font-size : 450%;
 	margin-left : 10vw;
 	margin-top : 3vw;
 }
@@ -89,7 +89,7 @@ ul li a {
 	 color:white;
 	 text-decoration:none;
 	 text-align:center;
-	 font-size : 250%
+	 font-size : 150%
  }
 
 ul li a:hover { color : #723a5f;} 
@@ -105,10 +105,6 @@ left: 100px;
 \*--------------*/
 
 h2 {font-family : 'lora';}
-h3 {
-	text-align: left;
-	font-family : 'lora';
-}
 
 .contenu, .contenuContact {
 	font-family: verdana;
@@ -197,7 +193,6 @@ h3 {
 
 .chart-wrapper .line {
   fill: none;
-  stroke: steelblue;
   stroke-width: 5px;
 }
 
@@ -259,14 +254,23 @@ h3 {
 
 
 #vis {
-            height: 70%;
+            height: 60%;
             margin: 0;
         }
 
-/* CSS of map.html */
+		div.tooltip {
+ 	position: absolute;
+	text-align: left;
+	padding: 2px 5px;
+	margin : 0px;
+	font: 16px sans-serif;
+	background: white;
+	border: 0px;
+	border-radius: 8px;
+	pointer-events: none;
+}
 
 p {
-	text-align: justify;
 	margin: 0px;
 	padding: 0px;
 }
@@ -360,4 +364,20 @@ p {
 
 #play-button:hover {
 	background-color: #696969;
+}
+button {
+	border:none;
+	padding:6px 0 6px 0;
+	border-radius:2px;
+	box-shadow:2px 2px 5px #aaa;
+	background:#fff;
+	font:bold 13px Arial;
+	color:#555;
+}
+
+#span_txt{
+	
+	font-style: Arial;
+	font-weight: 200px;
+	
 }
